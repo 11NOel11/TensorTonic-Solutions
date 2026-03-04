@@ -5,7 +5,15 @@ def sigmoid(x):
     Vectorized sigmoid function.
     """
     # Write code here
-    y=np.array(x)
+    y=np.asarray(x, dtype=float)
+    out=np.empty_like(y)
+    pos = (y >= 0)
+    neg = ~pos
+    t = np.empty_like(y)
+    np.exp(-y, out=t, where=pos)
+    out[pos] = 1.0 / (1.0 + t[pos])
+    
 
-    sigmoid=1/(1+np.exp(-y))
-    return sigmoid
+    np.exp(y, out=t, where=neg)
+    out[neg] = t[neg] / (1.0 + t[neg])
+    return out
